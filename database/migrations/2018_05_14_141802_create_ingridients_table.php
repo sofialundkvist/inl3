@@ -17,6 +17,8 @@ class CreateIngridientsTable extends Migration
             $table->increments('id');
             $table->integer('recipe_id');
             $table->string('title');
+            $table->float('amount')->nullable();
+            $table->string('unit')->nullable();
             $table->timestamps();
         });
     }

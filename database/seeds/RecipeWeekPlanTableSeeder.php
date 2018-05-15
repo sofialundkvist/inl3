@@ -11,6 +11,15 @@ class RecipeWeekPlanTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('recipe_week_plan')->insert([
+            [
+                'recipe_id' => 1,
+                'week_plan_id' => 1,
+            ],
+            [
+                'recipe_id' => 1,
+                'week_plan_id' => 2,
+            ],
+        ]);
     }
 }

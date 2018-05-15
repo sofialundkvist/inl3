@@ -11,6 +11,11 @@ class CategoryRecipeTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('category_recipe')->insert([
+            [
+                'category_id' => 3,
+                'recipe_id' => 1
+            ]
+        ]);
     }
 }
