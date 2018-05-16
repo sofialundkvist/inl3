@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\WeekPlan;
 use Illuminate\Http\Request;
 
 class WeekPlanController extends Controller
@@ -13,7 +14,10 @@ class WeekPlanController extends Controller
      */
     public function index()
     {
-        //
+        $week_plans = WeekPlan::all();
+        return view('allWeekPlans', [
+            'week_plans' => $week_plans,
+        ]);
     }
 
     /**
@@ -45,7 +49,11 @@ class WeekPlanController extends Controller
      */
     public function show($id)
     {
-        //
+        $week_plan = WeekPlan::find($id);
+        $week_plan->recipies = $week_plan->recipies;
+        return view('weekPlan', [
+            'week_plan' => $week_plan,
+        ]);
     }
 
     /**

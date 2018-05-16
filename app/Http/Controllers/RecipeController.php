@@ -27,7 +27,7 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        return view('createRecipe');
     }
 
     /**
@@ -49,7 +49,13 @@ class RecipeController extends Controller
      */
     public function show($id)
     {
-        //
+        $recipe = Recipe::find($id);
+        $recipe->instructions = json_encode($recipe->instructions);
+        $recipe->ingridients = json_encode($recipe->ingridients);
+        $recipe->cateogories = json_encode($recipe->categories);
+        return view('recipe', [
+            'recipe' => $recipe,
+        ]);
     }
 
     /**
@@ -60,7 +66,7 @@ class RecipeController extends Controller
      */
     public function edit($id)
     {
-        //
+        return "Här ska visas formulär för att redigera ett recept";
     }
 
     /**
