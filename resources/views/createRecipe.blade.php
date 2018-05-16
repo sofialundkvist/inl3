@@ -36,9 +36,9 @@
                 </div>
                 <div class="form-group">
                     <h3>Instruktioner</h3>
-                    <fieldset id="recipeIngridients">
-                        <div class="row justify-content-center" id="ingridientRow1">
-                            <label for="instruction1" class="col-md-1">1</label>
+                    <fieldset id="recipeInstructions">
+                        <div class="row justify-content-center" id="instructionsRow1">
+                            <label for="instruction1" id="instr1Label" class="col-md-1">1</label>
                             <input type="text" class="form-control custom-input col-md-10" name="instruction1" id="instruction1" placeholder="Steg 1">
                         </div>
                         <button type="button" class="btn btn-secondary" id="addInstruction">Lägg till instruktion</button>
