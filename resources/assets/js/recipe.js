@@ -10,21 +10,21 @@ $(document).ready(function () {
         nextIngridient = nextIngridient + 1;
 
         // Create new input element and remove button
-        var newIn = '<div class="row" id="ingridientRow' + nextIngridient + '"> \
+        var newIn = '<div class="row justify-content-left" id="ingridientRow' + nextIngridient + '"> \
             <input class="form-control col-md-11" id="ingridient' + nextIngridient + '" \
-            name="ingridient' + nextIngridient + '" type="text" placeholder="Ingrediens">\
+            name="ingridients[]" type="text" placeholder="Ingrediens">\
             </div>';
         var newInput = $(newIn);
         var removeBtn = '<button id="remove' + (nextIngridient - 1) + '" \
-            class="btn btn-danger remove-me col-md-1" >-</button>';
+            class="btn btn-danger remove-ingridient col-md-1" >-</button>';
         var removeButton = $(removeBtn);
 
         // Add new input and remove button after last input field
         $("#ingridientRow" + lastInput).after(newInput);
-        $("#ingridient" + lastInput).after(removeButton);
+        $("#ingridient" + nextIngridient).after(removeButton);
 
-        // Add click event to remove button on new input field
-        $('.remove-me').click(function (e) {
+        // Add click event to the remove button on new input field
+        $('.remove-ingridient').click(function (e) {
             e.preventDefault();
             var fieldNum = this.id.charAt(this.id.length - 1); // get id of input
             var fieldID = "#ingridient" + fieldNum;
@@ -44,11 +44,9 @@ $(document).ready(function () {
         nextInstruction = nextInstruction + 1;
 
         // Create new input element and remove button
-        var newIn = '<div class="row" id="instructionsRow' + nextInstruction + '"> \
-            <label for="instruction' + nextInstruction + '" id="instr' + nextInstruction + 'Label" \
-            class="col-md-1">' + nextInstruction + '</label> \
+        var newIn = '<div class="row justify-content-center" id="instructionsRow' + nextInstruction + '"> \
             <input class="form-control col-md-10" id="instruction' + nextInstruction + '" \
-            name="instruction' + nextInstruction + '" type="text" placeholder="Steg ' + nextInstruction + '"></div>';
+            name="instructions[]" type="text" placeholder="Steg"></div>';
         var newInput = $(newIn);
         var removeBtn = '<button id="removeBtn' + (nextInstruction - 1) + '" \
             class="btn btn-danger remove-instruction col-md-1" >-</button>';
