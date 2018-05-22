@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\WeekPlan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WeekPlanController extends Controller
 {
@@ -27,7 +28,7 @@ class WeekPlanController extends Controller
      */
     public function create()
     {
-        //
+        return view('createWeekplan');
     }
 
     /**
@@ -38,7 +39,15 @@ class WeekPlanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // Create new week plan instance
+         $week_plan = new WeekPlan;
+         $week_plan->week_nr = $request->weekNr;
+         $week_plan->year = $request->year;
+         $week_plan->save();
+
+         Log::info("New week plan created, id: " . $week_plan->id);
+
+         return("Veckoplan skapad");
     }
 
     /**
