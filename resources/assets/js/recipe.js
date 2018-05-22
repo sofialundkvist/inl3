@@ -1,6 +1,10 @@
-import {DH_UNABLE_TO_CHECK_GENERATOR} from "constants";
+$(document)
+    .ready(function () {
+        addIngridientInput();
+        addInstructionInput();
+    });
 
-$(document).ready(function () {
+function addIngridientInput() {
     var nextIngridient = 1;
     $("#addIngridient").click(function (e) {
         e.preventDefault();
@@ -13,12 +17,11 @@ $(document).ready(function () {
 
         // Create new input element and remove button
         var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' + nextIngridient + '"> \
-            <input class="form-control col-md-11" id="ingridient' + nextIngridient + '" \
-            name="ingridients[]" type="text" placeholder="Ingrediens"></div>';
+        <input class="form-control col-md-11" id="ingridient' + nextIngridient + '" \
+        name="ingridients[]" type="text" placeholder="Ingrediens"></div>';
         var newInput = $(newIn);
         var removeBtn = '<button id="' + (nextIngridient) + 'remove" \
-            class="btn btn-danger remove-ingridient col-md-1" >-</butt' +
-                'on>';
+        class="btn btn-danger remove-ingridient col-md-1" >-</button>';
         var removeButton = $(removeBtn);
 
         // Add new input and remove button after last input field
@@ -36,7 +39,9 @@ $(document).ready(function () {
             $(fieldID).remove();
         });
     });
+}
 
+function addInstructionInput() {
     var nextInstruction = 1;
     $("#addInstruction").click(function (e) {
         e.preventDefault();
@@ -50,12 +55,12 @@ $(document).ready(function () {
         // Create new input element and remove button
         var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRo' +
                 'w' + nextInstruction + '"> \
-            <input class="form-control col-md-11" id="instruction' + nextInstruction + '" \
-            name="instructions[]" type="text" placeholder="Steg"></div>';
+        <input class="form-control col-md-11" id="instruction' + nextInstruction + '" \
+        name="instructions[]" type="text" placeholder="Steg"></div>';
         var newInput = $(newIn);
         var removeBtn = '<button id="' + (nextInstruction) + 'removeBtn" \
-            class="btn btn-danger remove-instruction col-md-1" >-</' +
-                'button>';
+        class="btn btn-danger remove-instruction col-md-1" >-</butt' +
+                'on>';
         var removeButton = $(removeBtn);
 
         // Add new input and remove button after last input field
@@ -74,4 +79,4 @@ $(document).ready(function () {
             $("#instr" + fieldNum + "Label").remove();
         });
     });
-});
+}
