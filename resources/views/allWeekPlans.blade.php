@@ -2,17 +2,25 @@
 
 @section('title', 'Alla veckoplaner')
 
+@section('styles')
+    <link href="{{ asset('css/weekPlan.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+<div class="container">
 
-<h2>Alla veckoplaner</h2>
-<hr />
+    <h2 class="mb-3">Alla veckoplaner</h2>
 
-@foreach ($week_plans as $week_plan)
-    <h3>År: {{ $week_plan->year }}</h3>
-    <h3>Veckonummer: {{ $week_plan->week_nr }}</h3>
-    <h3>Recept:</h3>
-    {{ $week_plan->recipies }}
-    <hr />
-@endforeach
+    <section class="row justify-content-center">
+        <ul class="col-md-12 list-group week-plan-list"> 
+        @foreach ($week_plans as $week_plan)
+            <a href="/veckoplan/{{$week_plan->id}}" class="list-item">
+                <li class="list-group-item"><h5>Vecka {{$week_plan->week_nr}}, år {{$week_plan->year}}</h5></li>
+            </a>
+        @endforeach
+        </ul>
+    </section>
+
+</div>
 
 @endsection

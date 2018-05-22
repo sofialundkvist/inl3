@@ -90,7 +90,7 @@ class RecipeController extends Controller
         $recipe->instructions = $recipe->instructions;
         $recipe->ingridients = $recipe->ingridients;
         $recipe->categories = $recipe->categories;
-        return view('recipe', [
+        return view('recipePage', [
             'recipe' => $recipe,
         ]);
     }
