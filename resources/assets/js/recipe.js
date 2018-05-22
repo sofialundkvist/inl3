@@ -1,3 +1,5 @@
+import {DH_UNABLE_TO_CHECK_GENERATOR} from "constants";
+
 $(document).ready(function () {
     var nextIngridient = 1;
     $("#addIngridient").click(function (e) {
@@ -10,13 +12,13 @@ $(document).ready(function () {
         nextIngridient = nextIngridient + 1;
 
         // Create new input element and remove button
-        var newIn = '<div class="row justify-content-left" id="ingridientRow' + nextIngridient + '"> \
+        var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' + nextIngridient + '"> \
             <input class="form-control col-md-11" id="ingridient' + nextIngridient + '" \
-            name="ingridients[]" type="text" placeholder="Ingrediens">\
-            </div>';
+            name="ingridients[]" type="text" placeholder="Ingrediens"></div>';
         var newInput = $(newIn);
-        var removeBtn = '<button id="remove' + (nextIngridient - 1) + '" \
-            class="btn btn-danger remove-ingridient col-md-1" >-</button>';
+        var removeBtn = '<button id="' + (nextIngridient) + 'remove" \
+            class="btn btn-danger remove-ingridient col-md-1" >-</butt' +
+                'on>';
         var removeButton = $(removeBtn);
 
         // Add new input and remove button after last input field
@@ -26,7 +28,9 @@ $(document).ready(function () {
         // Add click event to the remove button on new input field
         $('.remove-ingridient').click(function (e) {
             e.preventDefault();
-            var fieldNum = this.id.charAt(this.id.length - 1); // get id of input
+            let fieldNum = this
+                .id
+                .substring(0, this.id.length - 6);
             var fieldID = "#ingridient" + fieldNum;
             $(this).remove();
             $(fieldID).remove();
@@ -44,22 +48,26 @@ $(document).ready(function () {
         nextInstruction = nextInstruction + 1;
 
         // Create new input element and remove button
-        var newIn = '<div class="row justify-content-center" id="instructionsRow' + nextInstruction + '"> \
-            <input class="form-control col-md-10" id="instruction' + nextInstruction + '" \
+        var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRo' +
+                'w' + nextInstruction + '"> \
+            <input class="form-control col-md-11" id="instruction' + nextInstruction + '" \
             name="instructions[]" type="text" placeholder="Steg"></div>';
         var newInput = $(newIn);
-        var removeBtn = '<button id="removeBtn' + (nextInstruction - 1) + '" \
-            class="btn btn-danger remove-instruction col-md-1" >-</button>';
+        var removeBtn = '<button id="' + (nextInstruction) + 'removeBtn" \
+            class="btn btn-danger remove-instruction col-md-1" >-</' +
+                'button>';
         var removeButton = $(removeBtn);
 
         // Add new input and remove button after last input field
         $("#instructionsRow" + lastInput).after(newInput);
-        $("#instruction" + lastInput).after(removeButton);
+        $("#instruction" + nextInstruction).after(removeButton);
 
         // Add click event to remove button on new input field
         $('.remove-instruction').click(function (e) {
             e.preventDefault();
-            var fieldNum = this.id.charAt(this.id.length - 1); // get id of input
+            let fieldNum = this
+                .id
+                .substring(0, this.id.length - 9);
             var fieldID = "#instruction" + fieldNum;
             $(this).remove();
             $(fieldID).remove();
