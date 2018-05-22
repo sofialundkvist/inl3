@@ -6,3 +6,11 @@
   margin: 20px auto;
 }
 
+.card-custom {
+  height: 100%;
+}
+
+.card-custom .card-body {
+  padding: 1rem;
+}
+

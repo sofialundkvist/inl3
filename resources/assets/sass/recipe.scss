@@ -1,7 +1,15 @@
 .custom-input {
-    width: auto;
+  width: auto;
 }
 
 .add-button {
-    margin: 20px auto;
+  margin: 20px auto;
+}
+
+.card-custom {
+  height: 100%;
+
+  .card-body {
+    padding: 1rem;
+  }
 }
