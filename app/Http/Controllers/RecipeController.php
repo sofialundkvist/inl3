@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Recipe;
+use App\Ingridient;
+use App\Instruction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RecipeController extends Controller
 {
@@ -14,6 +17,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
+        Log::info('Show all recipes');
         $recipes = Recipe::all();
         return view('allRecipes', [
             'recipes' => $recipes,
@@ -38,7 +42,40 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Create new recipe instance
+        $recipe = new Recipe;
+        $recipe->title = $request->recipeTitle;
+        $recipe->portions_no = $request->recipePortions;
+        $recipe->save();
+
+        Log::info('Recipe instance created, id = ' . $recipe->id);
+
+        $ingridients = $request->ingridients;
+        $instructions = $request->instructions;
+
+        // Add ingridients
+        for ($i = 0; $i < count($ingridients); $i++) {
+            if (!empty($ingridients[$i])) {
+                $newIngridient = new Ingridient;
+                $newIngridient->recipe_id = $recipe->id;
+                $newIngridient->title = $ingridients[$i];
+                // TODO: Lägg till amount och unit
+                $newIngridient->save();
+            }
+        }
+
+        // Add instructions
+        for ($i = 0; $i < count($instructions); $i++) {
+            if (!empty($instructions[$i])) {
+                $newInstruction = new Instruction;
+                $newInstruction->recipe_id = $recipe->id;
+                $newInstruction->description = $instructions[$i];
+                $newInstruction->step_no = $i + 1;
+                $newInstruction->save();
+            }
+        }
+
+        return redirect('/recept' . '/' . (string) $recipe->id);
     }
 
     /**
