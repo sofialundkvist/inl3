@@ -13,3 +13,13 @@
     padding: 1rem;
   }
 }
+
+.recipe {
+  .details {
+    .instructions {
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

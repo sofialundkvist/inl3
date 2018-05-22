@@ -87,9 +87,9 @@ class RecipeController extends Controller
     public function show($id)
     {
         $recipe = Recipe::find($id);
-        $recipe->instructions = json_encode($recipe->instructions);
-        $recipe->ingridients = json_encode($recipe->ingridients);
-        $recipe->cateogories = json_encode($recipe->categories);
+        $recipe->instructions = $recipe->instructions;
+        $recipe->ingridients = $recipe->ingridients;
+        $recipe->categories = $recipe->categories;
         return view('recipe', [
             'recipe' => $recipe,
         ]);
