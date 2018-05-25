@@ -11,7 +11,6 @@
     <div class="row justify-content-center">
         <div class="col-md-8 justify-content-center">
             <h2 class="col-md-12">Skapa ny veckoplan</h2>
-
             <form action="/veckoplan" method="POST">
                 {{csrf_field()}}
                 <div class="form-group col-md-12">

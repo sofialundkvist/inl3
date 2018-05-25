@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Veckoplan vecka {{$week_plan->week_nr}}, {{week_plan->year}}')
+@section('title', 'Alla recept')
 
 @section('styles')
     <link href="{{ asset('css/recipe.css') }}" rel="stylesheet">
@@ -9,17 +9,10 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between">
-        <h2>Veckoplan vecka {{ $week_plan->week_nr }}, {{ $week_plan->year }}</h2>
-        <div>
-            <a href="/veckoplan/{{$week_plan->id}}/recept" class="btn btn-primary">Lägg till recept</a>
-            <a href="/veckoplan/{{$week_plan->id}}/redigera" class="btn btn-primary">Redigera</a>
-            <button href="/veckoplan/{{$week_plan->id}}/redigera" class="btn btn-primary" id="removeRecipe">Ta bort</button>
-        </div>
-    </div>
-    <hr />
-    <section class="d-flex flex-row flex-wrap justify-content-start">
-    @foreach ($week_plan->recipies as $recipe)
+    <a href="/veckoplan/{{$week_plan->id}}"><< Tillbaka till veckoplan</a>
+    <h2>Lägg till recept</h2>
+    <section class="row justify-content-start">
+        @foreach ($recipes as $recipe)
         <div class="col-md-3 mb-4">
             <article class="card card-custom">
                 <img class="card-img-top" src="{{ asset('images/placeholder_image.png') }}" alt="Placeholder image">
@@ -27,14 +20,20 @@
                     <h6 class="card-title font-weight-bold">{{ $recipe->title }}</h6>
                     <div class="d-flex justify-content-between">
                         <p><span class="font-weight-bold">Portioner:</span> {{ $recipe->portions_no }}</p>
-                        <a href="/recept/{{$recipe->id}}" class="btn btn-primary">Gå till recept</a>
+                        <button type="button" class="btn btn-primary addRecipeBtn" id="{{$recipe->id}}addRecipeBtn">Lägg till recept</a>
                     </div>
                 </div>
             </article>
         </div>
-    @endforeach
+        @endforeach
     </section>
+    <div id="week_plan_id" style="display: none;">
+        <?php 
+            echo $week_plan->id;
+        ?>
+    </div>
 </div>
+
 @endsection
 
 @section('scripts')

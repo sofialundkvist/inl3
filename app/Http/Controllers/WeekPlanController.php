@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\WeekPlan;
+use App\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -47,7 +48,58 @@ class WeekPlanController extends Controller
 
          Log::info("New week plan created, id: " . $week_plan->id);
 
-         return("Veckoplan skapad");
+         return view("weekPlan", [
+             'week_plan' => $week_plan
+         ]);;
+    }
+
+    /**
+     * Show the view for adding recipes to a weekplan.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addRecipes($id) {
+        $week_plan = WeekPlan::find($id);
+        $recipes = $this->filterRecipes($week_plan->recipies);
+        return view('addRecipes', [
+            'week_plan' => $week_plan,
+            'recipes' => $recipes
+        ]);
+    }
+
+    /**
+     * Filter out recipes that has already been added to weekplan.
+     */
+    private function filterRecipes($weekPlanRecipes) {
+        $allRecipes = Recipe::all();
+        $recipes = array();
+        foreach($allRecipes as $recipe) {
+            $exists = false;
+            foreach ($weekPlanRecipes as $weekPlanRecipe) {
+                if ($weekPlanRecipe->id == $recipe->id) {
+                    $exists = true;
+                    break;
+                } 
+            }
+            if (!$exists) {
+                array_push($recipes, $recipe);
+            }
+        };
+        return $recipes;
+    }
+
+    /**
+     * Attach a recipe to a week plan resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeRecipes(Request $request, $id) {
+        $week_plan = WeekPlan::find($id);
+        $week_plan->recipies()->attach($request->recipeId);
+        $return_data = json_encode(array('success' => true), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 
     /**
