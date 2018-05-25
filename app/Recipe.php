@@ -29,4 +29,12 @@ class Recipe extends Model
     {
         return $this->belongsToMany('App\Category');
     }
+
+    /**
+     * Get the weekplans that this recipe is in.
+     */
+    public function week_plans()
+    {
+        return $this->belongsToMany('App\WeekPlan');
+    }
 }

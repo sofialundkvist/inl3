@@ -11,9 +11,13 @@
 |
  */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/hem', 'HomeController@index')->name('home');
 
 // Recipe routes:
 
@@ -66,6 +70,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/skapa-veckoplan', 'WeekPlanController@create');
 
     Route::post('/veckoplan', 'WeekPlanController@store');
+
+    Route::get('/veckoplan/{id}/recept', 'WeekPlanController@addRecipes');
+
+    Route::post('/veckoplan/{id}/recept', 'WeekPlanController@storeRecipes');
 
     Route::get('/veckoplan/{id}/redigera', 'WeekPlanController@edit');
 
