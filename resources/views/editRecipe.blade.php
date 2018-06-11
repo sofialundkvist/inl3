@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Skapa nytt recept')
+@section('title', 'Redigera recept')
 
 @section('styles')
     <link href="{{ asset('css/recipe.css') }}" rel="stylesheet">
@@ -11,8 +11,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8 justify-content-center">
             <h2 class="col-md-12">Skapa nytt recept</h2>
-            @component('recipeForm')
+            @component('recipeForm', [
+                'ingridients' => $recipe->ingridients,
+                'instructions' => $recipe->instructions
+            ])
                 @slot('action') /recept @endslot
+                @slot('method') PUT @endslot
+                @slot('title') {{ $recipe->title }} @endslot
+                @slot('portions_no') {{ $recipe->portions_no }} @endslot
             @endComponent
         </div>
     </div>

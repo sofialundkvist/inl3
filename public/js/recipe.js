@@ -82,19 +82,18 @@ $(document).ready(function () {
 });
 
 function addIngridientInput() {
-  var nextIngridient = 1;
   $("#addIngridient").click(function (e) {
     e.preventDefault();
 
-    // Get id of last input field:
-    var lastInput = nextIngridient;
+    // Get id of last input field
+    var lastInput = getLastIngridientNr();
 
     // Set number for next input field
-    nextIngridient = nextIngridient + 1;
+    var nextIngridient = lastInput + 1;
 
     // Create new input element and remove button
     var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' + nextIngridient + '"> \
-        <input class="form-control col-md-11" id="ingridient' + nextIngridient + '" \
+        <input class="form-control col-md-11 ingridients" id="ingridient' + nextIngridient + '" \
         name="ingridients[]" type="text" placeholder="Ingrediens"></div>';
     var newInput = $(newIn);
     var removeBtn = '<button id="' + nextIngridient + 'remove" \
@@ -109,27 +108,40 @@ function addIngridientInput() {
     $(".remove-ingridient").click(function (e) {
       e.preventDefault();
       var fieldNum = this.id.substring(0, this.id.length - 6);
-      var fieldID = "#ingridient" + fieldNum;
+      console.log("number of remove button: " + fieldNum);
+      var fieldID = "#ingridientRow" + fieldNum;
       $(this).remove();
       $(fieldID).remove();
     });
   });
 }
 
+function getLastIngridientNr() {
+  var ingridients = $(".ingridients").map(function (index) {
+    var number = $(this).attr("id").substring(10, $(this).attr("id").length);
+    return number;
+  });
+
+  // Return id of last input field:
+  return Math.max.apply(Math, ingridients);
+}
+
 function addInstructionInput() {
-  var nextInstruction = 1;
   $("#addInstruction").click(function (e) {
     e.preventDefault();
 
-    // Get id of last input field:
-    var lastInput = nextInstruction;
+    // Get id of last input field
+    var lastInput = getLastInstructionNr();
 
     // Set number for next input field
-    nextInstruction = nextInstruction + 1;
+    var nextInstruction = lastInput + 1;
+
+    console.log("lastInput: ", lastInput);
+    console.log("nextInput: ", nextInstruction);
 
     // Create new input element and remove button
-    var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRo' + "w" + nextInstruction + '"> \
-        <input class="form-control col-md-11" id="instruction' + nextInstruction + '" \
+    var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow' + nextInstruction + '"> \
+        <input class="form-control col-md-11 instructions" id="instruction' + nextInstruction + '" \
         name="instructions[]" type="text" placeholder="Steg"></div>';
     var newInput = $(newIn);
     var removeBtn = '<button id="' + nextInstruction + 'removeBtn" \
@@ -144,12 +156,22 @@ function addInstructionInput() {
     $(".remove-instruction").click(function (e) {
       e.preventDefault();
       var fieldNum = this.id.substring(0, this.id.length - 9);
-      var fieldID = "#instruction" + fieldNum;
+      var fieldID = "#instructionsRow" + fieldNum;
       $(this).remove();
       $(fieldID).remove();
       $("#instr" + fieldNum + "Label").remove();
     });
   });
+}
+
+function getLastInstructionNr() {
+  var ingridients = $(".instructions").map(function (index) {
+    var number = $(this).attr("id").substring(11, $(this).attr("id").length);
+    return number;
+  });
+
+  // Return id of last input field:
+  return Math.max.apply(Math, ingridients);
 }
 
 /**
@@ -159,9 +181,24 @@ function removeRecipe() {
   var nextIngridient = 1;
   $("#removeRecipe").click(function (e) {
     e.preventDefault();
+    var weekPlanId = $("#recipeId").text().trim();
 
-    // Get id of recipe
-    // Delete request to /veckoplan/id
+    console.log(weekPlanId);
+
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "/recipe/" + weekPlanId,
+      method: "delete",
+      dataType: "json"
+    }).done(function (data, textStatus, jqXHR) {
+      console.log("done " + data);
+      window.location = "/recept";
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+      console.log("error " + errorThrown);
+      alert("Något gick fel, det gick inte att ta bort veckoplanen");
+    });
   });
 }
 

@@ -22,6 +22,7 @@ class RecipeController extends Controller
         $recipes = Recipe::all();
         return view('allRecipes', [
             'recipes' => $recipes,
+            'current_user_id' => Auth::id()
         ]);
     }
 
@@ -92,8 +93,9 @@ class RecipeController extends Controller
         $recipe->instructions = $recipe->instructions;
         $recipe->ingridients = $recipe->ingridients;
         $recipe->categories = $recipe->categories;
-        return view('recipePage', [
+        return view('recipe', [
             'recipe' => $recipe,
+            'current_user_id' => Auth::id()
         ]);
     }
 
@@ -105,7 +107,10 @@ class RecipeController extends Controller
      */
     public function edit($id)
     {
-        return "Här ska visas formulär för att redigera ett recept";
+        $recipe = Recipe::find($id);
+        return view("editRecipe", [
+            'recipe' => $recipe,
+        ]);
     }
 
     /**
@@ -117,7 +122,11 @@ class RecipeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $recipe = Recipe::find($id);
+        return view("recipe", [
+            'recipe' => $recipe,
+            'current_user_id' => Auth::id()
+        ]);
     }
 
     /**
@@ -128,6 +137,9 @@ class RecipeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $recipe = Recipe::find($id);
+        $recipe->delete();
+        $return_data = json_encode(array('success' => true), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 }

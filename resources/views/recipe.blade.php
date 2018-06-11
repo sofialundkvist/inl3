@@ -8,6 +8,12 @@
 
 @section('content')
 <div class="container recipe">
+    @if ($recipe->user_id === $current_user_id)
+      <div class="row justify-content-end options">
+          <a href="/recept/{{$recipe->id}}/redigera" class="btn btn-primary">Redigera</a>
+          <button class="btn btn-primary" id="removeRecipe">Ta bort</button>
+      </div>
+    @endif
   <div class="row mb-5">
     <img class="col-sm-12 col-md-6" src="{{ asset('images/placeholder_image.png') }}" alt="Placeholder image">
     <div class="col-sm-12 col-md-6">
@@ -47,5 +53,9 @@
   </div>
 </div>
 
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/recipe.js') }}" defer></script>
 @endsection
 

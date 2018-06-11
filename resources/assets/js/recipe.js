@@ -4,22 +4,21 @@ $(document).ready(function() {
 });
 
 function addIngridientInput() {
-  var nextIngridient = 1;
   $("#addIngridient").click(function(e) {
     e.preventDefault();
 
-    // Get id of last input field:
-    var lastInput = nextIngridient;
+    // Get id of last input field
+    let lastInput = getLastIngridientNr();
 
     // Set number for next input field
-    nextIngridient = nextIngridient + 1;
+    let nextIngridient = lastInput + 1;
 
     // Create new input element and remove button
     var newIn =
       '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' +
       nextIngridient +
       '"> \
-        <input class="form-control col-md-11" id="ingridient' +
+        <input class="form-control col-md-11 ingridients" id="ingridient' +
       nextIngridient +
       '" \
         name="ingridients[]" type="text" placeholder="Ingrediens"></div>';
@@ -39,31 +38,42 @@ function addIngridientInput() {
     $(".remove-ingridient").click(function(e) {
       e.preventDefault();
       let fieldNum = this.id.substring(0, this.id.length - 6);
-      var fieldID = "#ingridient" + fieldNum;
+      console.log("number of remove button: " + fieldNum);
+      var fieldID = "#ingridientRow" + fieldNum;
       $(this).remove();
       $(fieldID).remove();
     });
   });
 }
 
+function getLastIngridientNr() {
+  let ingridients = $(".ingridients").map(function(index) {
+    let number = $(this)
+      .attr("id")
+      .substring(10, $(this).attr("id").length);
+    return number;
+  });
+
+  // Return id of last input field:
+  return Math.max.apply(Math, ingridients);
+}
+
 function addInstructionInput() {
-  var nextInstruction = 1;
   $("#addInstruction").click(function(e) {
     e.preventDefault();
 
-    // Get id of last input field:
-    var lastInput = nextInstruction;
+    // Get id of last input field
+    let lastInput = getLastInstructionNr();
 
     // Set number for next input field
-    nextInstruction = nextInstruction + 1;
+    let nextInstruction = lastInput + 1;
 
     // Create new input element and remove button
     var newIn =
-      '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRo' +
-      "w" +
+      '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow' +
       nextInstruction +
       '"> \
-        <input class="form-control col-md-11" id="instruction' +
+        <input class="form-control col-md-11 instructions" id="instruction' +
       nextInstruction +
       '" \
         name="instructions[]" type="text" placeholder="Steg"></div>';
@@ -84,12 +94,24 @@ function addInstructionInput() {
     $(".remove-instruction").click(function(e) {
       e.preventDefault();
       let fieldNum = this.id.substring(0, this.id.length - 9);
-      var fieldID = "#instruction" + fieldNum;
+      var fieldID = "#instructionsRow" + fieldNum;
       $(this).remove();
       $(fieldID).remove();
       $("#instr" + fieldNum + "Label").remove();
     });
   });
+}
+
+function getLastInstructionNr() {
+  let ingridients = $(".instructions").map(function(index) {
+    let number = $(this)
+      .attr("id")
+      .substring(11, $(this).attr("id").length);
+    return number;
+  });
+
+  // Return id of last input field:
+  return Math.max.apply(Math, ingridients);
 }
 
 /**
@@ -99,8 +121,27 @@ function removeRecipe() {
   var nextIngridient = 1;
   $("#removeRecipe").click(function(e) {
     e.preventDefault();
+    let weekPlanId = $("#recipeId")
+      .text()
+      .trim();
 
-    // Get id of recipe
-    // Delete request to /veckoplan/id
+    console.log(weekPlanId);
+
+    $.ajax({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "/recipe/" + weekPlanId,
+      method: "delete",
+      dataType: "json"
+    })
+      .done(function(data, textStatus, jqXHR) {
+        console.log("done " + data);
+        window.location = "/recept";
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log("error " + errorThrown);
+        alert("Något gick fel, det gick inte att ta bort veckoplanen");
+      });
   });
 }
