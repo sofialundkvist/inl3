@@ -14,7 +14,8 @@ class RecipesTableSeeder extends Seeder
         DB::table('recipes')->insert([
             [
                 'title' => 'Mozzarella- och spenatlasagne',
-                'portions_no' => 6
+                'portions_no' => 6,
+                'user_id' => 2
             ]
         ]);
     }

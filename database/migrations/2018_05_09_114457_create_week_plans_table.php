@@ -17,6 +17,7 @@ class CreateWeekPlansTable extends Migration
             $table->increments('id');
             $table->year('year');
             $table->integer('week_nr');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

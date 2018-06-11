@@ -6,6 +6,7 @@ use App\WeekPlan;
 use App\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class WeekPlanController extends Controller
 {
@@ -17,8 +18,10 @@ class WeekPlanController extends Controller
     public function index()
     {
         $week_plans = WeekPlan::all();
+        $current_user_id = Auth::id();
         return view('allWeekPlans', [
             'week_plans' => $week_plans,
+            'current_user_id' => $current_user_id
         ]);
     }
 
@@ -44,6 +47,7 @@ class WeekPlanController extends Controller
          $week_plan = new WeekPlan;
          $week_plan->week_nr = $request->weekNr;
          $week_plan->year = $request->year;
+         $week_plan->user_id = Auth::id();
          $week_plan->save();
 
          Log::info("New week plan created, id: " . $week_plan->id);

@@ -15,10 +15,12 @@ class WeekPlansTableSeeder extends Seeder
             [
                 'year' => 2018,
                 'week_nr' => 1,
+                'user_id' => 2
             ],
             [
                 'year' => 2018,
                 'week_nr' => 2,
+                'user_id' => 2
             ],
         ]);
     }

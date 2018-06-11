@@ -7,6 +7,7 @@ use App\Ingridient;
 use App\Instruction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
@@ -46,6 +47,7 @@ class RecipeController extends Controller
         $recipe = new Recipe;
         $recipe->title = $request->recipeTitle;
         $recipe->portions_no = $request->recipePortions;
+        $recipe->user_id = Auth::id();
         $recipe->save();
 
         Log::info('Recipe instance created, id = ' . $recipe->id);
