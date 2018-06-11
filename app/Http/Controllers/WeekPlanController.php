@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\WeekPlan;
 use App\Recipe;
+use App\WeekPlan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class WeekPlanController extends Controller
 {
@@ -21,7 +21,7 @@ class WeekPlanController extends Controller
         $current_user_id = Auth::id();
         return view('allWeekPlans', [
             'week_plans' => $week_plans,
-            'current_user_id' => $current_user_id
+            'current_user_id' => $current_user_id,
         ]);
     }
 
@@ -43,18 +43,19 @@ class WeekPlanController extends Controller
      */
     public function store(Request $request)
     {
-         // Create new week plan instance
-         $week_plan = new WeekPlan;
-         $week_plan->week_nr = $request->weekNr;
-         $week_plan->year = $request->year;
-         $week_plan->user_id = Auth::id();
-         $week_plan->save();
+        // Create new week plan instance
+        $week_plan = new WeekPlan;
+        $week_plan->week_nr = $request->weekNr;
+        $week_plan->year = $request->year;
+        $week_plan->user_id = Auth::id();
+        $week_plan->save();
 
-         Log::info("New week plan created, id: " . $week_plan->id);
+        Log::info("New week plan created, id: " . $week_plan->id);
 
-         return view("weekPlan", [
-             'week_plan' => $week_plan
-         ]);;
+        return view("weekPlan", [
+            'week_plan' => $week_plan,
+            'current_user_id' => Auth::id(),
+        ]);
     }
 
     /**
@@ -62,28 +63,30 @@ class WeekPlanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function addRecipes($id) {
+    public function addRecipes($id)
+    {
         $week_plan = WeekPlan::find($id);
         $recipes = $this->filterRecipes($week_plan->recipies);
         return view('addRecipes', [
             'week_plan' => $week_plan,
-            'recipes' => $recipes
+            'recipes' => $recipes,
         ]);
     }
 
     /**
      * Filter out recipes that has already been added to weekplan.
      */
-    private function filterRecipes($weekPlanRecipes) {
+    private function filterRecipes($weekPlanRecipes)
+    {
         $allRecipes = Recipe::all();
         $recipes = array();
-        foreach($allRecipes as $recipe) {
+        foreach ($allRecipes as $recipe) {
             $exists = false;
             foreach ($weekPlanRecipes as $weekPlanRecipe) {
                 if ($weekPlanRecipe->id == $recipe->id) {
                     $exists = true;
                     break;
-                } 
+                }
             }
             if (!$exists) {
                 array_push($recipes, $recipe);
@@ -99,7 +102,8 @@ class WeekPlanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function storeRecipes(Request $request, $id) {
+    public function storeRecipes(Request $request, $id)
+    {
         $week_plan = WeekPlan::find($id);
         $week_plan->recipies()->attach($request->recipeId);
         $return_data = json_encode(array('success' => true), JSON_FORCE_OBJECT);
@@ -116,8 +120,10 @@ class WeekPlanController extends Controller
     {
         $week_plan = WeekPlan::find($id);
         $week_plan->recipies = $week_plan->recipies;
+        $current_user_id = Auth::id();
         return view('weekPlan', [
             'week_plan' => $week_plan,
+            'current_user_id' => $current_user_id,
         ]);
     }
 
@@ -129,7 +135,11 @@ class WeekPlanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $week_plan = WeekPlan::find($id);
+        return view('editWeekPlan', [
+            'week_plan' => $week_plan,
+        ]
+        );
     }
 
     /**
@@ -141,7 +151,15 @@ class WeekPlanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $week_plan = WeekPlan::find($id);
+        $week_plan->week_nr = $request->weekNr;
+        $week_plan->year = $request->year;
+        $week_plan->save();
+
+        return view('weekPlan', [
+            'week_plan' => $week_plan,
+            'current_user_id' => Auth::id(),
+        ]);
     }
 
     /**

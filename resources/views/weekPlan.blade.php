@@ -11,11 +11,13 @@
 <div class="container">
     <div class="d-flex justify-content-between">
         <h2>Veckoplan vecka {{ $week_plan->week_nr }}, {{ $week_plan->year }}</h2>
+        @if ($week_plan->user_id === $current_user_id)
         <div>
             <a href="/veckoplan/{{$week_plan->id}}/recept" class="btn btn-primary">Lägg till recept</a>
             <a href="/veckoplan/{{$week_plan->id}}/redigera" class="btn btn-primary">Redigera</a>
             <button href="/veckoplan/{{$week_plan->id}}/redigera" class="btn btn-primary" id="removeRecipe">Ta bort</button>
         </div>
+        @endif
     </div>
     <hr />
     <section class="d-flex flex-row flex-wrap justify-content-start">
