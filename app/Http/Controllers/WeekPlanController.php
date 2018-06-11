@@ -170,6 +170,9 @@ class WeekPlanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $week_plan = WeekPlan::find($id);
+        $week_plan->delete();
+        $return_data = json_encode(array('success' => true), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 }

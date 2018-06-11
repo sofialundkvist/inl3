@@ -15,7 +15,7 @@
         <div>
             <a href="/veckoplan/{{$week_plan->id}}/recept" class="btn btn-primary">Lägg till recept</a>
             <a href="/veckoplan/{{$week_plan->id}}/redigera" class="btn btn-primary">Redigera</a>
-            <button href="/veckoplan/{{$week_plan->id}}/redigera" class="btn btn-primary" id="removeRecipe">Ta bort</button>
+            <button class="btn btn-primary" id="removeWeekPlan">Ta bort</button>
         </div>
         @endif
     </div>
@@ -36,6 +36,9 @@
         </div>
     @endforeach
     </section>
+</div>
+<div id="week_plan_id" style="display: none;">
+    <?php echo $week_plan->id; ?>
 </div>
 @endsection
 
