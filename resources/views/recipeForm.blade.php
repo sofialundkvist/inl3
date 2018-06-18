@@ -1,4 +1,4 @@
-<form action={{ $action }} method="POST">
+<form action={{ $action }} method="POST" id="recipeForm" {{ isset($recipe_id) ? "data-recipe-id=" . $recipe_id : "" }}>
     @if(isset($method))
         <input type="hidden" name="_method" value="PUT"> 
     @endif 
@@ -6,7 +6,7 @@
     <div class="form-group col-md-12">
         <label for="recipeTitle">Titel</label>
         <input type="text" class="form-control" name="recipeTitle" id="recipeTitle" 
-            placeholder="Titel" {{ isset($title) ? "value=" . $title : "" }}>
+            placeholder="Titel" value="{{ isset($title) ? $title : "" }}">
     </div>
     <div class="form-group col-md-12">
         <label for="recipePortions">Antal portioner</label>
@@ -22,16 +22,19 @@
     <div class="form-group">
         <label for="ingridients[]" class="col-md-12">Ingredienser</label>
         <fieldset id="recipeIngridients" class="d-flex flex-row justify-content-center">
-            @if (isset($ingridients))
+            @if (isset($ingridients) && count($ingridients) > 0)
                 @foreach($ingridients as $i => $ingridient) 
                     <div class="d-flex flex-row justify-content-start col-md-12" id="ingridientRow{{ $i + 1 }}">
                         <input type="text" class="{{ "form-control custom-input" . 
                             ($i !== 0 ? " col-md-11 " : " col-md-12 ") . "ingridients" }}"
                             name="ingridients[]" id="ingridient{{ $i + 1}}" placeholder="Ingrediens"
-                            value={{ $ingridient->title }}
+                            value="{{ $ingridient->title }}"
                         >
                         @if($i !== 0)
-                            <button id= {{ ($i + 1) . "remove" }} class="btn btn-danger remove-ingridient col-md-1" >
+                            <button 
+                                id= {{ ($i + 1) . "remove" }} 
+                                class="btn btn-danger remove-ingridient col-md-1"
+                            >
                                 -
                             </button>
                         @endif
@@ -55,16 +58,19 @@
     <div class="form-group">
         <label for="instructions[]" class="col-md-12">Instruktioner</label>
         <fieldset id="recipeInstructions" class="d-flex flex-row justify-content-center">
-            @if (isset($instructions))
+            @if (isset($instructions) && count($instructions) > 0)
                 @foreach($instructions as $i => $instruction) 
                     <div class="d-flex flex-row justify-content-start col-md-12" id="instructionsRow{{ $i + 1 }}">
                         <input type="text" class="{{ "form-control custom-input" . 
                             ($i !== 0 ? " col-md-11 " : " col-md-12 ") . "instructions" }}"
                             name="instructions[]" id="instruction{{ $i + 1 }}" placeholder="Instruktion"
-                            value={{ $instruction->description }}
+                            value="{{ $instruction->description }}"
                         >
                         @if($i !== 0)
-                            <button id= {{ ($i + 1) . "removeBtn" }} class="btn btn-danger remove-instruction col-md-1" >
+                            <button 
+                                id= {{ ($i + 1) . "removeBtn" }} 
+                                class="btn btn-danger remove-instruction col-md-1" 
+                            >
                                 -
                             </button>
                         @endif

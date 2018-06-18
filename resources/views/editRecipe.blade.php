@@ -19,6 +19,7 @@
                 @slot('method') PUT @endslot
                 @slot('title') {{ $recipe->title }} @endslot
                 @slot('portions_no') {{ $recipe->portions_no }} @endslot
+                @slot('recipe_id') {{ $recipe->id }} @endslot
             @endComponent
         </div>
     </div>

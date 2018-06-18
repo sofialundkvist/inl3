@@ -76,9 +76,28 @@ module.exports = __webpack_require__(47);
 /***/ 47:
 /***/ (function(module, exports) {
 
+// Instructions and ingridients that are to be removed on submit
+var instructionsRemoved = [];
+var ingridientsRemoved = [];
+
 $(document).ready(function () {
   addIngridientInput();
   addInstructionInput();
+
+  // Add click event to already existing ingridients (when updating recipe)
+  $(".remove-instruction").click(function (e) {
+    removeInstruction(e, this);
+  });
+
+  // Add click event to already existing instructions (when updating recipe)
+  $(".remove-ingridient").click(function (e) {
+    removeIngridient(e, this);
+  });
+
+  // Add event handler to submit event on form
+  $("#recipeForm").submit(function (e) {
+    saveRecipe(e, this);
+  });
 });
 
 function addIngridientInput() {
@@ -106,12 +125,7 @@ function addIngridientInput() {
 
     // Add click event to the remove button on new input field
     $(".remove-ingridient").click(function (e) {
-      e.preventDefault();
-      var fieldNum = this.id.substring(0, this.id.length - 6);
-      console.log("number of remove button: " + fieldNum);
-      var fieldID = "#ingridientRow" + fieldNum;
-      $(this).remove();
-      $(fieldID).remove();
+      removeIngridient(e, this);
     });
   });
 }
@@ -126,6 +140,18 @@ function getLastIngridientNr() {
   return Math.max.apply(Math, ingridients);
 }
 
+/**
+ * Remove ingridient from recipe
+ * @param {*} event The click event
+ * @param {*} removeBtn The button that has been clicked
+ */
+function removeIngridient(event, removeBtn) {
+  event.preventDefault();
+  var fieldNum = removeBtn.id.substring(0, removeBtn.id.length - 6);
+  var fieldID = "#ingridientRow" + fieldNum;
+  $(fieldID).remove();
+}
+
 function addInstructionInput() {
   $("#addInstruction").click(function (e) {
     e.preventDefault();
@@ -135,9 +161,6 @@ function addInstructionInput() {
 
     // Set number for next input field
     var nextInstruction = lastInput + 1;
-
-    console.log("lastInput: ", lastInput);
-    console.log("nextInput: ", nextInstruction);
 
     // Create new input element and remove button
     var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow' + nextInstruction + '"> \
@@ -154,12 +177,7 @@ function addInstructionInput() {
 
     // Add click event to remove button on new input field
     $(".remove-instruction").click(function (e) {
-      e.preventDefault();
-      var fieldNum = this.id.substring(0, this.id.length - 9);
-      var fieldID = "#instructionsRow" + fieldNum;
-      $(this).remove();
-      $(fieldID).remove();
-      $("#instr" + fieldNum + "Label").remove();
+      removeInstruction(e, this);
     });
   });
 }
@@ -175,21 +193,80 @@ function getLastInstructionNr() {
 }
 
 /**
+ * Remove instruction from recipe
+ * @param {} event The click event
+ * @param {*} removeBtn The button that has been clicked
+ */
+function removeInstruction(event, removeBtn) {
+  event.preventDefault();
+  var fieldNum = removeBtn.id.substring(0, removeBtn.id.length - 9);
+  var fieldID = "#instructionsRow" + fieldNum;
+  $(fieldID).remove();
+}
+
+/**
+ * Saves new recipe or updates already existing one
+ */
+function saveRecipe(e, form) {
+  e.preventDefault();
+
+  if (form.hasAttribute("data-recipe-id")) {
+    var method = "PUT";
+    var url = "/recept/" + $(form).attr("data-recipe-id");
+  } else {
+    var method = "POST";
+    var url = "/recept";
+  }
+
+  var title = $("#recipeTitle").val();
+  var portions = $("#recipePortions").val();
+  var ingridients = [];
+  var instructions = [];
+
+  $('input[name^="ingridients"]').each(function () {
+    ingridients.push($(this).val());
+  });
+
+  $('input[name^="instructions"]').each(function () {
+    instructions.push($(this).val());
+  });
+
+  $.ajax({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    },
+    url: url,
+    method: "POST",
+    data: {
+      _method: method,
+      ingridients: ingridients,
+      instructions: instructions,
+      recipeTitle: title,
+      recipePortions: portions
+    },
+    dataType: "json"
+  }).done(function (data, textStatus, jqXHR) {
+    console.log("done " + data);
+    window.location = "/recept/" + data.recipeId;
+  }).fail(function (jqXHR, textStatus, errorThrown) {
+    console.log("error " + errorThrown);
+    alert("Något gick fel, det gick inte att uppdatera receptet");
+  });
+}
+
+/**
  * Remove recipe
  */
 function removeRecipe() {
-  var nextIngridient = 1;
   $("#removeRecipe").click(function (e) {
     e.preventDefault();
-    var weekPlanId = $("#recipeId").text().trim();
-
-    console.log(weekPlanId);
+    var recipeId = $("#recipeId").text().trim();
 
     $.ajax({
       headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
       },
-      url: "/recipe/" + weekPlanId,
+      url: "/recept/" + recipeId,
       method: "delete",
       dataType: "json"
     }).done(function (data, textStatus, jqXHR) {
@@ -197,7 +274,7 @@ function removeRecipe() {
       window.location = "/recept";
     }).fail(function (jqXHR, textStatus, errorThrown) {
       console.log("error " + errorThrown);
-      alert("Något gick fel, det gick inte att ta bort veckoplanen");
+      alert("Något gick fel, det gick inte att ta bort receptet");
     });
   });
 }
