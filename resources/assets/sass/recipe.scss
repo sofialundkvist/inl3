@@ -15,6 +15,14 @@
 }
 
 .recipe {
+  .options {
+    margin: 20px 0;
+
+    a {
+      margin-right: 10px;
+    }
+  }
+
   .details {
     .instructions {
       p {

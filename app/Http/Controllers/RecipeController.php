@@ -18,10 +18,10 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        Log::info('Show all recipes');
         $recipes = Recipe::all();
         return view('allRecipes', [
             'recipes' => $recipes,
+            'current_user_id' => Auth::id()
         ]);
     }
 
@@ -50,8 +50,6 @@ class RecipeController extends Controller
         $recipe->user_id = Auth::id();
         $recipe->save();
 
-        Log::info('Recipe instance created, id = ' . $recipe->id);
-
         $ingridients = $request->ingridients;
         $instructions = $request->instructions;
 
@@ -77,7 +75,8 @@ class RecipeController extends Controller
             }
         }
 
-        return redirect('/recept' . '/' . (string) $recipe->id);
+        $return_data = json_encode(array('success' => true, 'recipeId' => $recipe->id), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 
     /**
@@ -92,8 +91,9 @@ class RecipeController extends Controller
         $recipe->instructions = $recipe->instructions;
         $recipe->ingridients = $recipe->ingridients;
         $recipe->categories = $recipe->categories;
-        return view('recipePage', [
+        return view('recipe', [
             'recipe' => $recipe,
+            'current_user_id' => Auth::id()
         ]);
     }
 
@@ -105,7 +105,10 @@ class RecipeController extends Controller
      */
     public function edit($id)
     {
-        return "Här ska visas formulär för att redigera ett recept";
+        $recipe = Recipe::find($id);
+        return view("editRecipe", [
+            'recipe' => $recipe,
+        ]);
     }
 
     /**
@@ -117,7 +120,43 @@ class RecipeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $recipe = Recipe::find($id);
+
+        // Update title and no of portions
+        $recipe->title = $request->recipeTitle;
+        $recipe->portions_no = $request->recipePortions;
+        $recipe->save();
+
+        // Remove all old ingridients and instructions (to add the new ones instead)
+        Ingridient::where('recipe_id', $recipe->id)->delete();
+        Instruction::where('recipe_id', $recipe->id)->delete();
+
+        // Add ingridients
+        $ingridients = $request->ingridients;
+        for ($i = 0; $i < count($ingridients); $i++) {
+            if (!empty($ingridients[$i])) {
+                $newIngridient = new Ingridient;
+                $newIngridient->recipe_id = $recipe->id;
+                $newIngridient->title = $ingridients[$i];
+                // TODO: Lägg till amount och unit
+                $newIngridient->save();
+            }
+        }
+
+        // Add instructions
+        $instructions = $request->instructions;
+        for ($i = 0; $i < count($instructions); $i++) {
+            if (!empty($instructions[$i])) {
+                $newInstruction = new Instruction;
+                $newInstruction->recipe_id = $recipe->id;
+                $newInstruction->description = $instructions[$i];
+                $newInstruction->step_no = $i + 1;
+                $newInstruction->save();
+            }
+        }
+
+        $return_data = json_encode(array('success' => true, 'recipeId' => $recipe->id), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 
     /**
@@ -128,6 +167,9 @@ class RecipeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $recipe = Recipe::find($id);
+        $recipe->delete();
+        $return_data = json_encode(array('success' => true), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 }

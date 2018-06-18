@@ -14,6 +14,14 @@
   padding: 1rem;
 }
 
+.recipe .options {
+  margin: 20px 0;
+}
+
+.recipe .options a {
+  margin-right: 10px;
+}
+
 .recipe .details .instructions p {
   margin-bottom: 0;
 }
