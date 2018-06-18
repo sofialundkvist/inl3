@@ -3,8 +3,14 @@ const instructionsRemoved = [];
 const ingridientsRemoved = [];
 
 $(document).ready(function() {
-  addIngridientInput();
-  addInstructionInput();
+  // Add event handler to submit event on form
+  $("#recipeForm").submit(function(e) {
+    saveRecipe(e, this);
+  });
+
+  $("#removeRecipe").click(function(e) {
+    removeRecipe(e);
+  });
 
   // Add click event to already existing ingridients (when updating recipe)
   $(".remove-instruction").click(function(e) {
@@ -16,47 +22,48 @@ $(document).ready(function() {
     removeIngridient(e, this);
   });
 
-  // Add event handler to submit event on form
-  $("#recipeForm").submit(function(e) {
-    saveRecipe(e, this);
+  $("#addIngridient").click(function(e) {
+    addIngridientInput(e);
+  });
+
+  $("#addInstruction").click(function(e) {
+    addInstructionInput(e);
   });
 });
 
-function addIngridientInput() {
-  $("#addIngridient").click(function(e) {
-    e.preventDefault();
+function addIngridientInput(e) {
+  e.preventDefault();
 
-    // Get id of last input field
-    var lastInput = getLastIngridientNr();
+  // Get id of last input field
+  var lastInput = getLastIngridientNr();
 
-    // Set number for next input field
-    var nextIngridient = lastInput + 1;
+  // Set number for next input field
+  var nextIngridient = lastInput + 1;
 
-    // Create new input element and remove button
-    var newIn =
-      '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' +
-      nextIngridient +
-      '"> \
+  // Create new input element and remove button
+  var newIn =
+    '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' +
+    nextIngridient +
+    '"> \
         <input class="form-control col-md-11 ingridients" id="ingridient' +
-      nextIngridient +
-      '" \
+    nextIngridient +
+    '" \
         name="ingridients[]" type="text" placeholder="Ingrediens"></div>';
-    var newInput = $(newIn);
-    var removeBtn =
-      '<button id="' +
-      nextIngridient +
-      'remove" \
+  var newInput = $(newIn);
+  var removeBtn =
+    '<button id="' +
+    nextIngridient +
+    'remove" \
         class="btn btn-danger remove-ingridient col-md-1" >-</button>';
-    var removeButton = $(removeBtn);
+  var removeButton = $(removeBtn);
 
-    // Add new input and remove button after last input field
-    $("#ingridientRow" + lastInput).after(newInput);
-    $("#ingridient" + nextIngridient).after(removeButton);
+  // Add new input and remove button after last input field
+  $("#ingridientRow" + lastInput).after(newInput);
+  $("#ingridient" + nextIngridient).after(removeButton);
 
-    // Add click event to the remove button on new input field
-    $(".remove-ingridient").click(function(e) {
-      removeIngridient(e, this);
-    });
+  // Add click event to the remove button on new input field
+  $(".remove-ingridient").click(function(e) {
+    removeIngridient(e, this);
   });
 }
 
@@ -84,42 +91,40 @@ function removeIngridient(event, removeBtn) {
   $(fieldID).remove();
 }
 
-function addInstructionInput() {
-  $("#addInstruction").click(function(e) {
-    e.preventDefault();
+function addInstructionInput(e) {
+  e.preventDefault();
 
-    // Get id of last input field
-    var lastInput = getLastInstructionNr();
+  // Get id of last input field
+  var lastInput = getLastInstructionNr();
 
-    // Set number for next input field
-    var nextInstruction = lastInput + 1;
+  // Set number for next input field
+  var nextInstruction = lastInput + 1;
 
-    // Create new input element and remove button
-    var newIn =
-      '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow' +
-      nextInstruction +
-      '"> \
+  // Create new input element and remove button
+  var newIn =
+    '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow' +
+    nextInstruction +
+    '"> \
         <input class="form-control col-md-11 instructions" id="instruction' +
-      nextInstruction +
-      '" \
+    nextInstruction +
+    '" \
         name="instructions[]" type="text" placeholder="Steg"></div>';
-    var newInput = $(newIn);
-    var removeBtn =
-      '<button id="' +
-      nextInstruction +
-      'removeBtn" \
+  var newInput = $(newIn);
+  var removeBtn =
+    '<button id="' +
+    nextInstruction +
+    'removeBtn" \
         class="btn btn-danger remove-instruction col-md-1" >-</butt' +
-      "on>";
-    var removeButton = $(removeBtn);
+    "on>";
+  var removeButton = $(removeBtn);
 
-    // Add new input and remove button after last input field
-    $("#instructionsRow" + lastInput).after(newInput);
-    $("#instruction" + nextInstruction).after(removeButton);
+  // Add new input and remove button after last input field
+  $("#instructionsRow" + lastInput).after(newInput);
+  $("#instruction" + nextInstruction).after(removeButton);
 
-    // Add click event to remove button on new input field
-    $(".remove-instruction").click(function(e) {
-      removeInstruction(e, this);
-    });
+  // Add click event to remove button on new input field
+  $(".remove-instruction").click(function(e) {
+    removeInstruction(e, this);
   });
 }
 
@@ -202,28 +207,30 @@ function saveRecipe(e, form) {
 /**
  * Remove recipe
  */
-function removeRecipe() {
-  $("#removeRecipe").click(function(e) {
-    e.preventDefault();
-    var recipeId = $("#recipeId")
-      .text()
-      .trim();
+function removeRecipe(e) {
+  e.preventDefault();
 
-    $.ajax({
-      headers: {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-      },
-      url: "/recept/" + recipeId,
-      method: "delete",
-      dataType: "json"
+  var recipeId = $("#recipe_id")
+    .text()
+    .trim();
+
+  $.ajax({
+    headers: {
+      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    },
+    url: "/recept/" + recipeId,
+    method: "POST",
+    data: {
+      _method: "DELETE"
+    },
+    dataType: "json"
+  })
+    .done(function(data, textStatus, jqXHR) {
+      console.log("done " + data);
+      window.location = "/recept";
     })
-      .done(function(data, textStatus, jqXHR) {
-        console.log("done " + data);
-        window.location = "/recept";
-      })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log("error " + errorThrown);
-        alert("Något gick fel, det gick inte att ta bort receptet");
-      });
-  });
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log("error " + errorThrown);
+      alert("Något gick fel, det gick inte att ta bort receptet");
+    });
 }
