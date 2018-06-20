@@ -1,32 +1,28 @@
-// Instructions and ingridients that are to be removed on submit
-const instructionsRemoved = [];
-const ingridientsRemoved = [];
-
-$(document).ready(function() {
+$(document).ready(function () {
   // Add event handler to submit event on form
-  $("#recipeForm").submit(function(e) {
+  $("#recipeForm").submit(function (e) {
     saveRecipe(e, this);
   });
 
-  $("#removeRecipe").click(function(e) {
+  $("#removeRecipe").click(function (e) {
     removeRecipe(e);
   });
 
   // Add click event to already existing ingridients (when updating recipe)
-  $(".remove-instruction").click(function(e) {
+  $(".remove-instruction").click(function (e) {
     removeInstruction(e, this);
   });
 
   // Add click event to already existing instructions (when updating recipe)
-  $(".remove-ingridient").click(function(e) {
+  $(".remove-ingridient").click(function (e) {
     removeIngridient(e, this);
   });
 
-  $("#addIngridient").click(function(e) {
+  $("#addIngridient").click(function (e) {
     addIngridientInput(e);
   });
 
-  $("#addInstruction").click(function(e) {
+  $("#addInstruction").click(function (e) {
     addInstructionInput(e);
   });
 });
@@ -62,13 +58,13 @@ function addIngridientInput(e) {
   $("#ingridient" + nextIngridient).after(removeButton);
 
   // Add click event to the remove button on new input field
-  $(".remove-ingridient").click(function(e) {
+  $(".remove-ingridient").click(function (e) {
     removeIngridient(e, this);
   });
 }
 
 function getLastIngridientNr() {
-  var ingridients = $(".ingridients").map(function(index) {
+  var ingridients = $(".ingridients").map(function (index) {
     var number = $(this)
       .attr("id")
       .substring(10, $(this).attr("id").length);
@@ -123,13 +119,13 @@ function addInstructionInput(e) {
   $("#instruction" + nextInstruction).after(removeButton);
 
   // Add click event to remove button on new input field
-  $(".remove-instruction").click(function(e) {
+  $(".remove-instruction").click(function (e) {
     removeInstruction(e, this);
   });
 }
 
 function getLastInstructionNr() {
-  var ingridients = $(".instructions").map(function(index) {
+  var ingridients = $(".instructions").map(function (index) {
     var number = $(this)
       .attr("id")
       .substring(11, $(this).attr("id").length);
@@ -171,34 +167,34 @@ function saveRecipe(e, form) {
   var ingridients = [];
   var instructions = [];
 
-  $('input[name^="ingridients"]').each(function() {
+  $('input[name^="ingridients"]').each(function () {
     ingridients.push($(this).val());
   });
 
-  $('input[name^="instructions"]').each(function() {
+  $('input[name^="instructions"]').each(function () {
     instructions.push($(this).val());
   });
 
   $.ajax({
-    headers: {
-      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-    },
-    url: url,
-    method: "POST",
-    data: {
-      _method: method,
-      ingridients: ingridients,
-      instructions: instructions,
-      recipeTitle: title,
-      recipePortions: portions
-    },
-    dataType: "json"
-  })
-    .done(function(data, textStatus, jqXHR) {
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: url,
+      method: "POST",
+      data: {
+        _method: method,
+        ingridients: ingridients,
+        instructions: instructions,
+        recipeTitle: title,
+        recipePortions: portions
+      },
+      dataType: "json"
+    })
+    .done(function (data, textStatus, jqXHR) {
       console.log("done " + data);
       window.location = "/recept/" + data.recipeId;
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
+    .fail(function (jqXHR, textStatus, errorThrown) {
       console.log("error " + errorThrown);
       alert("Något gick fel, det gick inte att uppdatera receptet");
     });
@@ -215,21 +211,21 @@ function removeRecipe(e) {
     .trim();
 
   $.ajax({
-    headers: {
-      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-    },
-    url: "/recept/" + recipeId,
-    method: "POST",
-    data: {
-      _method: "DELETE"
-    },
-    dataType: "json"
-  })
-    .done(function(data, textStatus, jqXHR) {
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+      },
+      url: "/recept/" + recipeId,
+      method: "POST",
+      data: {
+        _method: "DELETE"
+      },
+      dataType: "json"
+    })
+    .done(function (data, textStatus, jqXHR) {
       console.log("done " + data);
       window.location = "/recept";
     })
-    .fail(function(jqXHR, textStatus, errorThrown) {
+    .fail(function (jqXHR, textStatus, errorThrown) {
       console.log("error " + errorThrown);
       alert("Något gick fel, det gick inte att ta bort receptet");
     });

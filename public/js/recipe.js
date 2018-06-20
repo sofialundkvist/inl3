@@ -76,10 +76,6 @@ module.exports = __webpack_require__(47);
 /***/ 47:
 /***/ (function(module, exports) {
 
-// Instructions and ingridients that are to be removed on submit
-var instructionsRemoved = [];
-var ingridientsRemoved = [];
-
 $(document).ready(function () {
   // Add event handler to submit event on form
   $("#recipeForm").submit(function (e) {

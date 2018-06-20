@@ -19,7 +19,7 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all();
-        return view('allRecipes', [
+        return view('recipe.index', [
             'recipes' => $recipes,
             'current_user_id' => Auth::id()
         ]);
@@ -32,7 +32,7 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('createRecipe');
+        return view('recipe.create');
     }
 
     /**
@@ -91,7 +91,7 @@ class RecipeController extends Controller
         $recipe->instructions = $recipe->instructions;
         $recipe->ingridients = $recipe->ingridients;
         $recipe->categories = $recipe->categories;
-        return view('recipe', [
+        return view('recipe.show', [
             'recipe' => $recipe,
             'current_user_id' => Auth::id()
         ]);
@@ -106,7 +106,7 @@ class RecipeController extends Controller
     public function edit($id)
     {
         $recipe = Recipe::find($id);
-        return view("editRecipe", [
+        return view("recipe.edit", [
             'recipe' => $recipe,
         ]);
     }
@@ -169,6 +169,9 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::find($id);
         $recipe->delete();
+        // Remove all ingridients and instructions for the recipe
+        Ingridient::where('recipe_id', $id)->delete();
+        Instruction::where('recipe_id', $id)->delete();
         $return_data = json_encode(array('success' => true), JSON_FORCE_OBJECT);
         return $return_data;
     }

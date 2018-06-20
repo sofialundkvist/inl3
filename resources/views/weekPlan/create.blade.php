@@ -9,7 +9,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8 justify-content-center">
             <h2 class="col-md-12">Skapa ny veckoplan</h2>
-            @component('weekPlanForm') @slot('action') /veckoplan @endslot @endcomponent
+            @component('weekPlan.components.weekPlanForm') @slot('action') /veckoplan @endslot @endcomponent
         </div>
     </div>
 </section>

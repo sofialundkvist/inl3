@@ -19,7 +19,7 @@ class WeekPlanController extends Controller
     {
         $week_plans = WeekPlan::all();
         $current_user_id = Auth::id();
-        return view('allWeekPlans', [
+        return view('weekPlan.index', [
             'week_plans' => $week_plans,
             'current_user_id' => $current_user_id,
         ]);
@@ -32,7 +32,7 @@ class WeekPlanController extends Controller
      */
     public function create()
     {
-        return view('createWeekplan');
+        return view('weekPlan.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class WeekPlanController extends Controller
 
         Log::info("New week plan created, id: " . $week_plan->id);
 
-        return view("weekPlan", [
+        return view("weekPlan.show", [
             'week_plan' => $week_plan,
             'current_user_id' => Auth::id(),
         ]);
@@ -67,7 +67,7 @@ class WeekPlanController extends Controller
     {
         $week_plan = WeekPlan::find($id);
         $recipes = $this->filterRecipes($week_plan->recipies);
-        return view('addRecipes', [
+        return view('weekPlan.addRecipes', [
             'week_plan' => $week_plan,
             'recipes' => $recipes,
         ]);
@@ -121,7 +121,7 @@ class WeekPlanController extends Controller
         $week_plan = WeekPlan::find($id);
         $week_plan->recipies = $week_plan->recipies;
         $current_user_id = Auth::id();
-        return view('weekPlan', [
+        return view('weekPlan.show', [
             'week_plan' => $week_plan,
             'current_user_id' => $current_user_id,
         ]);
@@ -136,7 +136,7 @@ class WeekPlanController extends Controller
     public function edit($id)
     {
         $week_plan = WeekPlan::find($id);
-        return view('editWeekPlan', [
+        return view('weekPlan.edit', [
             'week_plan' => $week_plan,
         ]
         );
@@ -156,7 +156,7 @@ class WeekPlanController extends Controller
         $week_plan->year = $request->year;
         $week_plan->save();
 
-        return view('weekPlan', [
+        return view('weekPlan.show', [
             'week_plan' => $week_plan,
             'current_user_id' => Auth::id(),
         ]);
