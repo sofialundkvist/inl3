@@ -38,7 +38,7 @@ function addIngridientInput(e) {
 
   // Create new input element and remove button
   var newIn =
-    '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' +
+    '<div class="d-flex flex-row justify-content-center" id="ingridientRow' +
     nextIngridient +
     '"> \
         <input class="form-control col-md-11 ingridients" id="ingridient' +
@@ -98,7 +98,7 @@ function addInstructionInput(e) {
 
   // Create new input element and remove button
   var newIn =
-    '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow' +
+    '<div class="d-flex flex-row justify-content-center" id="instructionsRow' +
     nextInstruction +
     '"> \
         <input class="form-control col-md-11 instructions" id="instruction' +

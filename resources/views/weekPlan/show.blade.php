@@ -15,7 +15,7 @@
         <div>
             <a href="/veckoplan/{{$week_plan->id}}/recept" class="btn btn-primary">Lägg till recept</a>
             <a href="/veckoplan/{{$week_plan->id}}/redigera" class="btn btn-primary">Redigera</a>
-            <button class="btn btn-primary" id="removeWeekPlan">Ta bort</button>
+            <button class="btn btn-danger" id="removeWeekPlan">Ta bort</button>
         </div>
         @endif
     </div>

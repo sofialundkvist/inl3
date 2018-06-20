@@ -1,7 +1,7 @@
 @extends('layouts.app') 
 @section('title', 'Skapa ny veckoplan') 
 @section('styles')
-<link href="{{ asset('css/weekPlan.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/weekPlan.css') }}" rel="stylesheet">
 @endsection
  
 @section('content')

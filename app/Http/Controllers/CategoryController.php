@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -38,7 +40,64 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category;
+        $category->title = $request->title;
+        $category->save();
+
+        $return_data = json_encode(array('success' => true, 'categoryId' => $category->id), JSON_FORCE_OBJECT);
+        return $return_data;
+    }
+
+    /**
+     * Show the view for adding recipes to a category.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addRecipes($id)
+    {
+        $category = Category::find($id);
+        $recipes = $this->filterRecipes($category->recipies);
+        return view('category.addRecipes', [
+            'category' => $category,
+            'recipes' => $recipes,
+        ]);
+    }
+
+    /**
+     * Filter out recipes that has already been added to category.
+     */
+    private function filterRecipes($categoryRecipies)
+    {
+        $allRecipes = Recipe::all();
+        $recipes = array();
+        foreach ($allRecipes as $recipe) {
+            $exists = false;
+            foreach ($categoryRecipies as $categoryRecipe) {
+                if ($categoryRecipe->id == $recipe->id) {
+                    $exists = true;
+                    break;
+                }
+            }
+            if (!$exists) {
+                array_push($recipes, $recipe);
+            }
+        };
+        return $recipes;
+    }
+
+    /**
+     * Attach a recipe to a category resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeRecipes(Request $request, $id)
+    {
+        $category = Category::find($id);
+        $category->recipies()->attach($request->recipeId);
+        $return_data = json_encode(array('success' => true), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 
     /**
@@ -64,7 +123,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return view('category.edit');
+        $category = Category::find($id);
+        return view('category.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -76,7 +138,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+
+        // Update title and no of portions
+        $category->title = $request->title;
+        $category->save();
+
+        $return_data = json_encode(array('success' => true, 'categoryId' => $category->id), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 
     /**

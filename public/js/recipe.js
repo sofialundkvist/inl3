@@ -60,20 +60,20 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 46);
+/******/ 	return __webpack_require__(__webpack_require__.s = 47);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 46:
+/***/ 47:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(47);
+module.exports = __webpack_require__(48);
 
 
 /***/ }),
 
-/***/ 47:
+/***/ 48:
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
@@ -115,7 +115,7 @@ function addIngridientInput(e) {
   var nextIngridient = lastInput + 1;
 
   // Create new input element and remove button
-  var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="ingridientRow' + nextIngridient + '"> \
+  var newIn = '<div class="d-flex flex-row justify-content-center" id="ingridientRow' + nextIngridient + '"> \
         <input class="form-control col-md-11 ingridients" id="ingridient' + nextIngridient + '" \
         name="ingridients[]" type="text" placeholder="Ingrediens"></div>';
   var newInput = $(newIn);
@@ -165,7 +165,7 @@ function addInstructionInput(e) {
   var nextInstruction = lastInput + 1;
 
   // Create new input element and remove button
-  var newIn = '<div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow' + nextInstruction + '"> \
+  var newIn = '<div class="d-flex flex-row justify-content-center" id="instructionsRow' + nextInstruction + '"> \
         <input class="form-control col-md-11 instructions" id="instruction' + nextInstruction + '" \
         name="instructions[]" type="text" placeholder="Steg"></div>';
   var newInput = $(newIn);

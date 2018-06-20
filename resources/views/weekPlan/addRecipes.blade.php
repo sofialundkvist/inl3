@@ -10,7 +10,8 @@
 @section('content')
 <div class="container">
     <a href="/veckoplan/{{$week_plan->id}}"><< Tillbaka till veckoplan</a>
-    <h2>Lägg till recept</h2>
+    <h2 class="mt-4 mb-3">Lägg till recept</h2>
+    @if(count($recipes) > 0)
     <section class="row justify-content-start">
         @foreach ($recipes as $recipe)
         <div class="col-md-3 mb-4">
@@ -27,6 +28,9 @@
         </div>
         @endforeach
     </section>
+    @else
+        <p>Det finns inga fler recept att lägga till.</p>
+    @endif
     <div id="week_plan_id" style="display: none;">
         <?php 
             echo $week_plan->id;

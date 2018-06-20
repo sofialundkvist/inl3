@@ -1,4 +1,7 @@
-<form action={{ $action }} method="POST" id="recipeForm" {{ isset($recipe_id) ? "data-recipe-id=" . $recipe_id : "" }}>
+<form action={{ $action }} method="POST" id="recipeForm" 
+    {{ isset($recipe_id) ? "data-recipe-id=" . $recipe_id : "" }}
+    class="d-flex flex-column align-items-center"
+>
     @if(isset($method))
         <input type="hidden" name="_method" value="PUT"> 
     @endif 
@@ -19,12 +22,12 @@
             <?php }?>
         </select>
     </div>
-    <div class="form-group">
-        <label for="ingridients[]" class="col-md-12">Ingredienser</label>
+    <div class="form-group col-md-12">
+        <label for="ingridients[]">Ingredienser</label>
         <fieldset id="recipeIngridients" class="d-flex flex-row justify-content-center">
             @if (isset($ingridients) && count($ingridients) > 0)
                 @foreach($ingridients as $i => $ingridient) 
-                    <div class="d-flex flex-row justify-content-start col-md-12" id="ingridientRow{{ $i + 1 }}">
+                    <div class="d-flex flex-row justify-content-start" id="ingridientRow{{ $i + 1 }}">
                         <input type="text" class="{{ "form-control custom-input" . 
                             ($i !== 0 ? " col-md-11 " : " col-md-12 ") . "ingridients" }}"
                             name="ingridients[]" id="ingridient{{ $i + 1}}" placeholder="Ingrediens"
@@ -44,7 +47,7 @@
                     Lägg till ingrediens
                 </button>
             @else
-                <div class="d-flex flex-row justify-content-start col-md-12" id="ingridientRow1">
+                <div class="d-flex flex-row justify-content-start" id="ingridientRow1">
                     <input type="text" class="form-control custom-input col-md-12 ingridients" 
                         name="ingridients[]" id="ingridient1" placeholder="Ingrediens"
                     >
@@ -55,12 +58,12 @@
             @endif
         </fieldset>
     </div>
-    <div class="form-group">
-        <label for="instructions[]" class="col-md-12">Instruktioner</label>
+    <div class="form-group col-md-12">
+        <label for="instructions[]">Instruktioner</label>
         <fieldset id="recipeInstructions" class="d-flex flex-row justify-content-center">
             @if (isset($instructions) && count($instructions) > 0)
                 @foreach($instructions as $i => $instruction) 
-                    <div class="d-flex flex-row justify-content-start col-md-12" id="instructionsRow{{ $i + 1 }}">
+                    <div class="d-flex flex-row justify-content-start" id="instructionsRow{{ $i + 1 }}">
                         <input type="text" class="{{ "form-control custom-input" . 
                             ($i !== 0 ? " col-md-11 " : " col-md-12 ") . "instructions" }}"
                             name="instructions[]" id="instruction{{ $i + 1 }}" placeholder="Instruktion"
@@ -80,7 +83,7 @@
                     Lägg till instruktion
                 </button>
             @else
-                <div class="d-flex flex-row justify-content-center col-md-12" id="instructionsRow1">
+                <div class="d-flex flex-row justify-content-center" id="instructionsRow1">
                     <input type="text" class="form-control custom-input col-md-12 instructions" 
                         name="instructions[]" id="instruction1" placeholder="Steg"
                     >
