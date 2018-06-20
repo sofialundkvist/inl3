@@ -64,7 +64,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/kategori">Se alla kategorier</a>
-                                <a class="dropdown-item" href="/skapa-kategorier">Skapa ny kategori</a>
+                                <a class="dropdown-item" href="/skapa-kategori">Skapa ny kategori</a>
                             </div>
                         </li>
                         @endguest

@@ -60,79 +60,51 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 48);
+/******/ 	return __webpack_require__(__webpack_require__.s = 50);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 48:
+/***/ 50:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(49);
+module.exports = __webpack_require__(51);
 
 
 /***/ }),
 
-/***/ 49:
+/***/ 51:
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  $(".addRecipeBtn").click(function (e) {
-    addRecipe(e, this);
-  });
-  $("#removeWeekPlan").click(function (e) {
-    removeWeekPlan(e);
-  });
+    $(".deleteCategory").click(function (e) {
+        removeCategory(e, this);
+    });
 });
 
 /**
- * Adds recipe to week plan
+ * Remove category
  */
-function addRecipe(e, weekPlan) {
-  e.preventDefault();
-  var recipeId = weekPlan.id.substring(0, weekPlan.id.length - 12);
-  var weekPlanId = $("#week_plan_id").text();
+function removeCategory(e, btn) {
+    e.preventDefault();
 
-  $.ajax({
-    headers: {
-      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-    },
-    url: "/veckoplan/" + weekPlanId + "/recept",
-    method: "POST",
-    data: {
-      recipeId: recipeId
-    },
-    dataType: "json"
-  }).done(function (data, textStatus, jqXHR) {
-    console.log("done " + data);
-    $("#" + recipeId + "addRecipeBtn").prop("disabled", true);
-  }).fail(function (jqXHR, textStatus, errorThrown) {
-    console.log("error " + errorThrown);
-    alert("Något gick fel, det gick inte att lägga till receptet.");
-  });
-}
-
-function removeWeekPlan(e) {
-  e.preventDefault();
-  var weekPlanId = $("#week_plan_id").text().trim();
-
-  $.ajax({
-    headers: {
-      "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-    },
-    url: "/veckoplan/" + weekPlanId,
-    method: "POST",
-    data: {
-      _method: "DELETE"
-    },
-    dataType: "json"
-  }).done(function (data, textStatus, jqXHR) {
-    console.log("done " + data);
-    window.location = "/veckoplan";
-  }).fail(function (jqXHR, textStatus, errorThrown) {
-    console.log("error " + errorThrown);
-    alert("Något gick fel, det gick inte att ta bort veckoplanen");
-  });
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        },
+        url: "/kategori/" + $(btn).attr("data-category-id"),
+        method: "POST",
+        data: {
+            _method: "DELETE"
+        },
+        dataType: "json"
+    }).done(function (data, textStatus, jqXHR) {
+        console.log("done " + data);
+        window.location = "/kategori";
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("error " + errorThrown);
+        alert("Något gick fel, det gick inte att ta bort receptet");
+    });
 }
 
 /***/ })

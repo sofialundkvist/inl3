@@ -1,61 +1,64 @@
-$(document).ready(function() {
-  addRecipe();
-  removeWeekPlan();
+$(document).ready(function () {
+  $(".addRecipeBtn").click(function (e) {
+    addRecipe(e, this);
+  });
+  $("#removeWeekPlan").click(function (e) {
+    removeWeekPlan(e);
+  });
 });
 
 /**
  * Adds recipe to week plan
  */
-function addRecipe() {
-  $(".addRecipeBtn").click(function(e) {
-    e.preventDefault();
-    let recipeId = this.id.substring(0, this.id.length - 12);
-    let weekPlanId = $("#week_plan_id").text();
+function addRecipe(e, weekPlan) {
+  e.preventDefault();
+  let recipeId = weekPlan.id.substring(0, weekPlan.id.length - 12);
+  let weekPlanId = $("#week_plan_id").text();
 
-    $.ajax({
+  $.ajax({
       headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
       },
       url: "/veckoplan/" + weekPlanId + "/recept",
       method: "POST",
-      data: { recipeId: recipeId },
+      data: {
+        recipeId: recipeId
+      },
       dataType: "json"
     })
-      .done(function(data, textStatus, jqXHR) {
-        console.log("done " + data);
-        $("#" + recipeId + "addRecipeBtn").prop("disabled", true);
-      })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log("error " + errorThrown);
-        alert("Något gick fel, det gick inte att lägga till receptet.");
-      });
-  });
+    .done(function (data, textStatus, jqXHR) {
+      console.log("done " + data);
+      $("#" + recipeId + "addRecipeBtn").prop("disabled", true);
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      console.log("error " + errorThrown);
+      alert("Något gick fel, det gick inte att lägga till receptet.");
+    });
 }
 
-function removeWeekPlan() {
-  $("#removeWeekPlan").click(function(e) {
-    e.preventDefault();
-    let weekPlanId = $("#week_plan_id")
-      .text()
-      .trim();
+function removeWeekPlan(e) {
+  e.preventDefault();
+  let weekPlanId = $("#week_plan_id")
+    .text()
+    .trim();
 
-    console.log(weekPlanId);
-
-    $.ajax({
+  $.ajax({
       headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
       },
       url: "/veckoplan/" + weekPlanId,
-      method: "delete",
+      method: "POST",
+      data: {
+        _method: "DELETE"
+      },
       dataType: "json"
     })
-      .done(function(data, textStatus, jqXHR) {
-        console.log("done " + data);
-        window.location = "/veckoplan";
-      })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log("error " + errorThrown);
-        alert("Något gick fel, det gick inte att ta bort veckoplanen");
-      });
-  });
+    .done(function (data, textStatus, jqXHR) {
+      console.log("done " + data);
+      window.location = "/veckoplan";
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      console.log("error " + errorThrown);
+      alert("Något gick fel, det gick inte att ta bort veckoplanen");
+    });
 }

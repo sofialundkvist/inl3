@@ -52,6 +52,9 @@
     </section>
   </div>
 </div>
+<div id="recipe_id" style="display: none;">
+    <?php echo $recipe->id; ?>
+</div>
 
 @endsection
 
