@@ -38,7 +38,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category;
+        $category->title = $request->title;
+        $category->save();
+
+        $return_data = json_encode(array('success' => true, 'categoryId' => $category->id), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 
     /**
@@ -64,7 +69,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return view('category.edit');
+        $category = Category::find($id);
+        return view('category.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -76,7 +84,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+
+        // Update title and no of portions
+        $category->title = $request->title;
+        $category->save();
+
+        $return_data = json_encode(array('success' => true, 'categoryId' => $category->id), JSON_FORCE_OBJECT);
+        return $return_data;
     }
 
     /**

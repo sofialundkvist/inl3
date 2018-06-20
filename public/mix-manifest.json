@@ -3,6 +3,7 @@
     "/css/app.css": "/css/app.css",
     "/css/recipe.css": "/css/recipe.css",
     "/css/weekPlan.css": "/css/weekPlan.css",
+    "/css/category.css": "/css/category.css",
     "/js/weekPlan.js": "/js/weekPlan.js",
     "/js/recipe.js": "/js/recipe.js",
     "/js/category.js": "/js/category.js"
