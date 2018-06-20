@@ -59,6 +59,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/kategori', 'CategoryController@store');
 
+    Route::get('/kategori/{id}/recept', 'CategoryController@addRecipes');
+
+    Route::post('/kategori/{id}/recept', 'CategoryController@storeRecipes');
+
     Route::get('/kategori/{id}/redigera', 'CategoryController@edit');
 
     Route::put('/kategori/{id}', 'CategoryController@update');

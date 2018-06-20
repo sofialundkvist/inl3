@@ -84,6 +84,10 @@ $(document).ready(function () {
     $(".deleteCategory").click(function (e) {
         removeCategory(e, this);
     });
+
+    $(".addRecipeBtn").click(function (e) {
+        addRecipe(e, this);
+    });
 });
 
 /**
@@ -91,7 +95,6 @@ $(document).ready(function () {
  */
 function saveCategory(e, form) {
     e.preventDefault();
-    console.log("saveCategory() run");
 
     if (form.hasAttribute("data-category-id")) {
         var method = "PUT";
@@ -102,8 +105,6 @@ function saveCategory(e, form) {
     }
 
     var title = $("#categoryTitle").val();
-
-    console.log("data-category-id attributet: ", $(form).attr("data-category-id"));
 
     $.ajax({
         headers: {
@@ -122,6 +123,33 @@ function saveCategory(e, form) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log("error " + errorThrown);
         alert("Något gick fel, det gick inte att uppdatera receptet");
+    });
+}
+
+/**
+ * Adds recipe to category
+ */
+function addRecipe(e, category) {
+    e.preventDefault();
+    var recipeId = category.id.substring(0, category.id.length - 12);
+    var categoryId = $("#category_id").text();
+
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        },
+        url: "/kategori/" + categoryId + "/recept",
+        method: "POST",
+        data: {
+            recipeId: recipeId
+        },
+        dataType: "json"
+    }).done(function (data, textStatus, jqXHR) {
+        console.log("done ", data);
+        $("#" + recipeId + "addRecipeBtn").prop("disabled", true);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("error " + errorThrown);
+        alert("Något gick fel, det gick inte att lägga till receptet.");
     });
 }
 
