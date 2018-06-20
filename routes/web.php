@@ -12,12 +12,10 @@
  */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Auth::routes();
-
-Route::get('/hem', 'HomeController@index')->name('home');
 
 // Recipe routes:
 
