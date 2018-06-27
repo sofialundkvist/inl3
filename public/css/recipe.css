@@ -1,0 +1,28 @@
+.recipe .options {
+  margin: 20px 0;
+}
+
+.recipe .options a {
+  margin-right: 10px;
+}
+
+.recipe .details .instructions p {
+  margin-bottom: 0;
+}
+
+.card-custom {
+  height: 100%;
+}
+
+.card-custom .card-body {
+  padding: 1rem;
+}
+
+.custom-input {
+  width: auto;
+}
+
+.add-button {
+  margin: 20px auto;
+}
+

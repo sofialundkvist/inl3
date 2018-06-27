@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateIngridientsTable extends Migration
 {
@@ -17,6 +17,8 @@ class CreateIngridientsTable extends Migration
             $table->increments('id');
             $table->integer('recipe_id');
             $table->string('title');
+            $table->float('amount')->nullable();
+            $table->string('unit')->nullable();
             $table->timestamps();
         });
     }

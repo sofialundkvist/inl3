@@ -17,6 +17,7 @@ class CreateRecipesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->integer('portions_no');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

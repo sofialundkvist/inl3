@@ -1,0 +1,18 @@
+.week-plan-list .list-item {
+  color: black;
+}
+
+.week-plan-list .list-item li {
+  padding: 1.25rem;
+}
+
+.week-plan-list .list-item li h5 {
+  margin-bottom: 0;
+}
+
+.week-plan-list .list-item li:hover {
+  background-color: lightgray;
+  color: black;
+  text-decoration: none;
+}
+

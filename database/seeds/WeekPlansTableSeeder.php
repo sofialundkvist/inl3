@@ -14,16 +14,14 @@ class WeekPlansTableSeeder extends Seeder
         DB::table('week_plans')->insert([
             [
                 'year' => 2018,
-                'week_nr' => 1
+                'week_nr' => 1,
+                'user_id' => 2
             ],
             [
                 'year' => 2018,
-                'week_nr' => 2
+                'week_nr' => 2,
+                'user_id' => 2
             ],
-            [
-                'year' => 2018,
-                'week_nr' => 3
-            ]
         ]);
     }
 }

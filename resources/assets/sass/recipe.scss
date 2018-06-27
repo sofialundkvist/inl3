@@ -1,0 +1,32 @@
+// Show recipe
+.recipe {
+  .options {
+    margin: 20px 0;
+    a {
+      margin-right: 10px;
+    }
+  }
+  .details {
+    .instructions {
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.card-custom {
+  height: 100%;
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+// Edit or create recipe
+.custom-input {
+  width: auto;
+}
+
+.add-button {
+  margin: 20px auto;
+}
