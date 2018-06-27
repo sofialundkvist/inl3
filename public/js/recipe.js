@@ -223,6 +223,7 @@ function saveRecipe(e, form) {
   var portions = $("#recipePortions").val();
   var ingridients = [];
   var instructions = [];
+  var categories = [];
 
   $('input[name^="ingridients"]').each(function () {
     ingridients.push($(this).val());
@@ -230,6 +231,12 @@ function saveRecipe(e, form) {
 
   $('input[name^="instructions"]').each(function () {
     instructions.push($(this).val());
+  });
+
+  $('input[name="category"]').each(function () {
+    if (this.checked) {
+      categories.push($(this).attr('data-category-id'));
+    }
   });
 
   $.ajax({
@@ -243,7 +250,8 @@ function saveRecipe(e, form) {
       ingridients: ingridients,
       instructions: instructions,
       recipeTitle: title,
-      recipePortions: portions
+      recipePortions: portions,
+      categories: categories
     },
     dataType: "json"
   }).done(function (data, textStatus, jqXHR) {

@@ -13,7 +13,9 @@
             <h2 class="col-md-12">Redigera recept</h2>
             @component('recipe.components.recipeForm', [
                 'ingridients' => $recipe->ingridients,
-                'instructions' => $recipe->instructions
+                'instructions' => $recipe->instructions,
+                'allCategories' => $allCategories,
+                'recipeCategories' => $recipe->categories
             ])
                 @slot('action') /recept @endslot
                 @slot('method') PUT @endslot

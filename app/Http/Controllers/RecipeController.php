@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Recipe;
 use App\Ingridient;
 use App\Instruction;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,10 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('recipe.create');
+        $allCategories = Category::all();
+        return view('recipe.create', [
+            'allCategories' => $allCategories
+        ]);
     }
 
     /**
@@ -52,6 +56,7 @@ class RecipeController extends Controller
 
         $ingridients = $request->ingridients;
         $instructions = $request->instructions;
+        $categories = $request->categories;
 
         // Add ingridients
         for ($i = 0; $i < count($ingridients); $i++) {
@@ -73,6 +78,11 @@ class RecipeController extends Controller
                 $newInstruction->step_no = $i + 1;
                 $newInstruction->save();
             }
+        }
+
+        // Add categories
+        for ($i = 0; $i < count($categories); $i++) {
+            $recipe->categories()->attach($categories[$i]);
         }
 
         $return_data = json_encode(array('success' => true, 'recipeId' => $recipe->id), JSON_FORCE_OBJECT);
@@ -106,8 +116,10 @@ class RecipeController extends Controller
     public function edit($id)
     {
         $recipe = Recipe::find($id);
+        $allCategories = Category::all();
         return view("recipe.edit", [
             'recipe' => $recipe,
+            'allCategories' => $allCategories
         ]);
     }
 
@@ -127,9 +139,12 @@ class RecipeController extends Controller
         $recipe->portions_no = $request->recipePortions;
         $recipe->save();
 
-        // Remove all old ingridients and instructions (to add the new ones instead)
+        // Remove all old ingridients, instructions and categories (to add the new ones instead)
         Ingridient::where('recipe_id', $recipe->id)->delete();
         Instruction::where('recipe_id', $recipe->id)->delete();
+        Log::info("instructions and ingridients deleted");
+        $recipe->categories()->detach();
+        Log::info("categories deleted");
 
         // Add ingridients
         $ingridients = $request->ingridients;
@@ -153,6 +168,12 @@ class RecipeController extends Controller
                 $newInstruction->step_no = $i + 1;
                 $newInstruction->save();
             }
+        }
+
+        // Add categories
+        $categories = $request->categories;
+        for ($i = 0; $i < count($categories); $i++) {
+            $recipe->categories()->attach($categories[$i]);
         }
 
         $return_data = json_encode(array('success' => true, 'recipeId' => $recipe->id), JSON_FORCE_OBJECT);

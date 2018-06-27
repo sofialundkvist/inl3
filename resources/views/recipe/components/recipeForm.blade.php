@@ -11,6 +11,7 @@
         <input type="text" class="form-control" name="recipeTitle" id="recipeTitle" 
             placeholder="Titel" value="{{ isset($title) ? $title : "" }}">
     </div>
+
     <div class="form-group col-md-12">
         <label for="recipePortions">Antal portioner</label>
         <select class="form-control" id="recipePortions" name="recipePortions">
@@ -22,6 +23,7 @@
             <?php }?>
         </select>
     </div>
+
     <div class="form-group col-md-12">
         <label for="ingridients[]">Ingredienser</label>
         <fieldset id="recipeIngridients" class="d-flex flex-row justify-content-center">
@@ -58,6 +60,7 @@
             @endif
         </fieldset>
     </div>
+
     <div class="form-group col-md-12">
         <label for="instructions[]">Instruktioner</label>
         <fieldset id="recipeInstructions" class="d-flex flex-row justify-content-center">
@@ -95,5 +98,39 @@
 
         </fieldset>
     </div>
+
+    <div class="form-group col-md-12">
+        <label for="category">Kategorier</label>
+        <fieldset id="recipeCategories" class="d-flex flex-row justify-content-center">
+            @if (isset($recipeCategories) && count($recipeCategories) > 0)
+                @foreach($allCategories as $i => $category)
+                    @foreach($recipeCategories as $recipeCategory)
+                        <?php 
+                            $checked = false;
+                            if ($category->id == $recipeCategory->id) {
+                                $checked = true; 
+                                break;
+                            }
+                        ?>
+                    @endforeach
+                    <div class="d-flex flex-row justify-content-start align-items-baseline">
+                        <input type="checkbox" id={{ "category" . $category->id }} name="category"
+                            value={{ $category->title }} data-category-id={{ $category->id }} {{ $checked ? "checked" : "" }} />
+                        <label for={{ "category" . $category->id }} class="ml-2">{{ $category->title }}</label>
+                    </div>
+                @endforeach
+            @else
+                @foreach($allCategories as $category) 
+                    <div class="d-flex flex-row justify-content-start align-items-baseline">
+                        <input type="checkbox" id={{ "category" . $category->id }} name="category"
+                            value={{ $category->title }} data-category-id={{ $category->id }} />
+                        <label for={{ "category" . $category->id }} class="ml-2">{{ $category->title }}</label>
+                    </div>
+                @endforeach
+            @endif
+        </fieldset>
+    </div>
+
+
     <input type="submit" class="btn btn-success align-self-center" value="Spara recept">
 </form>

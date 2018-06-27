@@ -11,8 +11,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8 justify-content-center">
             <h2 class="col-md-12">Skapa nytt recept</h2>
-            @component('recipe.components.recipeForm')
+            @component('recipe.components.recipeForm', [
+                'allCategories' => $allCategories
+            ])
                 @slot('action') /recept @endslot
+                @slot('categories')  @endslot
             @endComponent
         </div>
     </div>

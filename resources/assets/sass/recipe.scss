@@ -1,28 +1,11 @@
-.custom-input {
-  width: auto;
-}
-
-.add-button {
-  margin: 20px auto;
-}
-
-.card-custom {
-  height: 100%;
-
-  .card-body {
-    padding: 1rem;
-  }
-}
-
+// Show recipe
 .recipe {
   .options {
     margin: 20px 0;
-
     a {
       margin-right: 10px;
     }
   }
-
   .details {
     .instructions {
       p {
@@ -30,4 +13,20 @@
       }
     }
   }
+}
+
+.card-custom {
+  height: 100%;
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+// Edit or create recipe
+.custom-input {
+  width: auto;
+}
+
+.add-button {
+  margin: 20px auto;
 }
