@@ -14,7 +14,7 @@
                 <a href="/kategori/{{ $category->id }}/redigera" class="btn btn-primary mr-2" role="button">
                     Redigera
                 </a>
-                <button class="btn btn-danger deleteCategory">Ta bort</button>
+                <button class="btn btn-danger deleteCategory" data-category-id={{ $category->id }}>Ta bort</button>
             </div>
         @endauth
     </div>

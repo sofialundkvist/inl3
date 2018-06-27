@@ -140,7 +140,6 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
 
-        // Update title and no of portions
         $category->title = $request->title;
         $category->save();
 
