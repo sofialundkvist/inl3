@@ -26,7 +26,7 @@
 
     <div class="form-group col-md-12">
         <label for="ingridients[]">Ingredienser</label>
-        <fieldset id="recipeIngridients" class="d-flex flex-row justify-content-center">
+        <fieldset id="recipeIngridients" class="d-flex flex-column justify-content-center">
             @if (isset($ingridients) && count($ingridients) > 0)
                 @foreach($ingridients as $i => $ingridient) 
                     <div class="d-flex flex-row justify-content-start" id="ingridientRow{{ $i + 1 }}">
@@ -63,7 +63,7 @@
 
     <div class="form-group col-md-12">
         <label for="instructions[]">Instruktioner</label>
-        <fieldset id="recipeInstructions" class="d-flex flex-row justify-content-center">
+        <fieldset id="recipeInstructions" class="d-flex flex-column justify-content-center">
             @if (isset($instructions) && count($instructions) > 0)
                 @foreach($instructions as $i => $instruction) 
                     <div class="d-flex flex-row justify-content-start" id="instructionsRow{{ $i + 1 }}">
@@ -101,7 +101,7 @@
 
     <div class="form-group col-md-12">
         <label for="category">Kategorier</label>
-        <fieldset id="recipeCategories" class="d-flex flex-row justify-content-center">
+        <fieldset id="recipeCategories" class="d-flex flex-column justify-content-center">
             @if (isset($recipeCategories) && count($recipeCategories) > 0)
                 @foreach($allCategories as $i => $category)
                     @foreach($recipeCategories as $recipeCategory)
